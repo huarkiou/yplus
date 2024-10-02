@@ -51,22 +51,26 @@ impl eframe::App for MyApp {
                 .show(ui, |ui| {
                     let name_label = ui.label("Characteristic Velocity: ");
                     ui.text_edit_singleline(&mut self.velocity)
-                        .labelled_by(name_label.id);
+                        .labelled_by(name_label.id)
+                        .on_hover_text("m/s");
                     ui.end_row();
 
                     let name_label = ui.label("Fluid Density: ");
                     ui.text_edit_singleline(&mut self.density)
-                        .labelled_by(name_label.id);
+                        .labelled_by(name_label.id)
+                        .on_hover_text("kg/m^3");
                     ui.end_row();
 
                     let name_label = ui.label("Viscosity: ");
                     ui.text_edit_singleline(&mut self.viscosity)
-                        .labelled_by(name_label.id);
+                        .labelled_by(name_label.id)
+                        .on_hover_text("kg/(m·s)");
                     ui.end_row();
 
                     let name_label = ui.label("Characteristic Length: ");
                     ui.text_edit_singleline(&mut self.length)
-                        .labelled_by(name_label.id);
+                        .labelled_by(name_label.id)
+                        .on_hover_text("m");
                     ui.end_row();
 
                     let name_label = ui.label("Target Y+: ");
@@ -78,23 +82,53 @@ impl eframe::App for MyApp {
                         if ui.button("Calculate").clicked() {
                             // 检查并读取输入
                             let velocity: f64 = match self.velocity.parse() {
-                                Ok(v) => v,
+                                Ok(v) => {
+                                    if v >= 0. {
+                                        v
+                                    } else {
+                                        f64::NAN
+                                    }
+                                }
                                 Err(_) => f64::NAN,
                             };
                             let density: f64 = match self.density.parse() {
-                                Ok(rho) => rho,
+                                Ok(rho) => {
+                                    if rho > 0. {
+                                        rho
+                                    } else {
+                                        f64::NAN
+                                    }
+                                }
                                 Err(_) => f64::NAN,
                             };
                             let viscosity: f64 = match self.viscosity.parse() {
-                                Ok(mu) => mu,
+                                Ok(mu) => {
+                                    if mu > 0. {
+                                        mu
+                                    } else {
+                                        f64::NAN
+                                    }
+                                }
                                 Err(_) => f64::NAN,
                             };
                             let length: f64 = match self.length.parse() {
-                                Ok(l) => l,
+                                Ok(l) => {
+                                    if l > 0. {
+                                        l
+                                    } else {
+                                        f64::NAN
+                                    }
+                                }
                                 Err(_) => f64::NAN,
                             };
                             let yplus: f64 = match self.yplus.parse() {
-                                Ok(v) => v,
+                                Ok(v) => {
+                                    if v > 0. {
+                                        v
+                                    } else {
+                                        f64::NAN
+                                    }
+                                }
                                 Err(_) => f64::NAN,
                             };
                             // 计算
@@ -112,7 +146,7 @@ impl eframe::App for MyApp {
                     ui.end_row();
 
                     ui.label("First Layer Height: ");
-                    ui.label(format!("{}", self.y1));
+                    ui.label(format!("{}", self.y1)).on_hover_text("m");
                     ui.end_row();
                 });
         });

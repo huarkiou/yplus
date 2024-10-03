@@ -1,19 +1,10 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
-use std::f64;
-use std::sync::Arc;
-
-use eframe::egui;
-use egui::IconData;
-use std::fs::read;
-
-use eframe::{
-    egui::{Context, FontData, FontDefinitions},
-    epaint::FontFamily,
-};
+use egui::{epaint::FontFamily, Context, FontData, FontDefinitions, IconData};
 use font_kit::{
     family_name::FamilyName, handle::Handle, properties::Properties, source::SystemSource,
 };
+use std::{f64, fs::read, sync::Arc};
 
 fn main() -> eframe::Result {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
@@ -31,7 +22,7 @@ fn main() -> eframe::Result {
                 width: w,
                 height: h,
             }))
-            .with_inner_size([380.0, 240.0]),
+            .with_inner_size([380.0, 220.0]),
         centered: true,
         persist_window: true,
         ..Default::default()

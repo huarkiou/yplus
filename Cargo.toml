@@ -15,6 +15,7 @@ env_logger = { version = "0.11.*", default-features = false, features = [
     "humantime",
 ] }
 image = "0.25.*"
+font-kit = "0.14.*"
 
 [build-dependencies]
 embed-resource = "2.5.*"

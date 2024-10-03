@@ -1,10 +1,19 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
-use core::f64;
+use std::f64;
 use std::sync::Arc;
 
 use eframe::egui;
 use egui::IconData;
+use std::fs::read;
+
+use eframe::{
+    egui::{Context, FontData, FontDefinitions},
+    epaint::FontFamily,
+};
+use font_kit::{
+    family_name::FamilyName, handle::Handle, properties::Properties, source::SystemSource,
+};
 
 fn main() -> eframe::Result {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
@@ -34,22 +43,59 @@ fn main() -> eframe::Result {
     )
 }
 
-fn load_fonts(ctx: &egui::Context) {
-    let mut fonts = egui::FontDefinitions::default();
-    fonts.font_data.insert(
-        "my_font".to_owned(),
-        egui::FontData::from_static(include_bytes!("../assets/msyh.ttc")),
-    );
+// fn load_fonts(ctx: &egui::Context) {
+//     let mut fonts = egui::FontDefinitions::default();
+//     fonts.font_data.insert(
+//         "my_font".to_owned(),
+//         egui::FontData::from_static(include_bytes!("../assets/msyh.ttc")),
+//     );
+//     fonts
+//         .families
+//         .get_mut(&egui::FontFamily::Proportional)
+//         .unwrap()
+//         .insert(0, "my_font".to_owned());
+//     fonts
+//         .families
+//         .get_mut(&egui::FontFamily::Monospace)
+//         .unwrap()
+//         .push("my_font".to_owned());
+//     ctx.set_fonts(fonts);
+// }
+
+// fn print_system_fonts() {
+//     for name in SystemSource::new().all_fonts().unwrap() {
+//         println!("{:?}", name.load().unwrap().postscript_name().unwrap());
+//     }
+// }
+
+fn load_system_font(ctx: &Context) {
+    let mut fonts = FontDefinitions::default();
+    let handle = match SystemSource::new().select_by_postscript_name("MicrosoftYaHeiRegular") {
+        Ok(v) => v,
+        Err(_) => SystemSource::new()
+            .select_best_match(&[FamilyName::SansSerif], &Properties::new())
+            .unwrap(),
+    };
+
+    let buf: Vec<u8> = match handle {
+        Handle::Memory { bytes, .. } => bytes.to_vec(),
+        Handle::Path { path, .. } => read(path).unwrap(),
+    };
+
+    const FONT_SYSTEM_SANS_SERIF: &'static str = "System Sans Serif";
+
     fonts
-        .families
-        .get_mut(&egui::FontFamily::Proportional)
-        .unwrap()
-        .insert(0, "my_font".to_owned());
-    fonts
-        .families
-        .get_mut(&egui::FontFamily::Monospace)
-        .unwrap()
-        .push("my_font".to_owned());
+        .font_data
+        .insert(FONT_SYSTEM_SANS_SERIF.to_owned(), FontData::from_owned(buf));
+
+    if let Some(vec) = fonts.families.get_mut(&FontFamily::Proportional) {
+        vec.push(FONT_SYSTEM_SANS_SERIF.to_owned());
+    }
+
+    if let Some(vec) = fonts.families.get_mut(&FontFamily::Monospace) {
+        vec.push(FONT_SYSTEM_SANS_SERIF.to_owned());
+    }
+
     ctx.set_fonts(fonts);
 }
 
@@ -64,7 +110,8 @@ struct MyApp {
 }
 impl MyApp {
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
-        load_fonts(&cc.egui_ctx);
+        // load_fonts(&cc.egui_ctx);
+        load_system_font(&cc.egui_ctx);
         Self {
             velocity: "1.0".to_string(),
             density: "1.205".to_string(),

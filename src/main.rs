@@ -135,10 +135,10 @@ impl eframe::App for MyApp {
                         .on_hover_text("kg/m^3");
                     ui.end_row();
 
-                    let name_label = ui.label("粘度系数: ");
+                    let name_label = ui.label("动力粘度系数: ");
                     ui.text_edit_singleline(&mut self.viscosity)
                         .labelled_by(name_label.id)
-                        .on_hover_text("kg/(m·s)");
+                        .on_hover_text("N·s/m^2");
                     ui.end_row();
 
                     let name_label = ui.label("特征长度: ");

@@ -30,7 +30,7 @@ fn main() -> eframe::Result {
     eframe::run_native(
         "Y+工具",
         options,
-        Box::new(|cc| Ok(Box::new(MyApp::new(cc)))),
+        Box::new(|cc| Ok(Box::new(YplusApp::new(cc)))),
     )
 }
 
@@ -73,7 +73,7 @@ fn load_system_font(ctx: &Context) {
         Handle::Path { path, .. } => read(path).unwrap(),
     };
 
-    const FONT_SYSTEM_SANS_SERIF: &'static str = "System Sans Serif";
+    const FONT_SYSTEM_SANS_SERIF: &'static str = "System Microsoft YaHei Regular";
 
     fonts
         .font_data
@@ -90,7 +90,7 @@ fn load_system_font(ctx: &Context) {
     ctx.set_fonts(fonts);
 }
 
-struct MyApp {
+struct YplusApp {
     velocity: String,
     density: String,
     viscosity: String,
@@ -99,9 +99,8 @@ struct MyApp {
     reynolds: f64,
     y1: f64,
 }
-impl MyApp {
+impl YplusApp {
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
-        // load_fonts(&cc.egui_ctx);
         load_system_font(&cc.egui_ctx);
         Self {
             velocity: "1.0".to_string(),
@@ -115,7 +114,7 @@ impl MyApp {
     }
 }
 
-impl eframe::App for MyApp {
+impl eframe::App for YplusApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("计算第一层网格高度").highlight();

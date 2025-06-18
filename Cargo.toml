@@ -1,25 +1,25 @@
 [package]
 name = "yplus"
-version = "0.1.0"
-edition = "2021"
+version = "0.1.1"
+edition = "2024"
 
 [profile.release]
 opt-level = 'z'
 lto = true
 
 [dependencies]
-eframe = { version = "0.29.*", features = [
+eframe = { version = "0.31.1", features = [
     "default",
     "__screenshot", # __screenshot is so we can dump a screenshot using EFRAME_SCREENSHOT_TO
 ] }
-egui = "0.29.*"
-egui_extras = { version = "0.29.*", features = ["default", "image"] }
-env_logger = { version = "0.11.*", default-features = false, features = [
+egui = "0.31.1"
+egui_extras = { version = "0.31.1", features = ["default", "image"] }
+env_logger = { version = "0.11.8", default-features = false, features = [
     "auto-color",
     "humantime",
 ] }
-image = "0.25.*"
-font-kit = "0.14.*"
+image = "0.25.6"
+font-kit = "0.14.3"
 
 [build-dependencies]
-embed-resource = "2.5.*"
+embed-resource = "3.0.4"

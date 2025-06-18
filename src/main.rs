@@ -1,6 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
-use egui::{epaint::FontFamily, Context, FontData, FontDefinitions, IconData};
+use egui::{Context, FontData, FontDefinitions, IconData, epaint::FontFamily};
 use font_kit::{
     family_name::FamilyName, handle::Handle, properties::Properties, source::SystemSource,
 };
@@ -75,9 +75,10 @@ fn load_system_font(ctx: &Context) {
 
     const FONT_SYSTEM_SANS_SERIF: &'static str = "System Microsoft YaHei Regular";
 
-    fonts
-        .font_data
-        .insert(FONT_SYSTEM_SANS_SERIF.to_owned(), FontData::from_owned(buf));
+    fonts.font_data.insert(
+        FONT_SYSTEM_SANS_SERIF.to_owned(),
+        FontData::from_owned(buf).into(),
+    );
 
     if let Some(vec) = fonts.families.get_mut(&FontFamily::Proportional) {
         vec.push(FONT_SYSTEM_SANS_SERIF.to_owned());

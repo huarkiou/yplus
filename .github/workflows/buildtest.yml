@@ -1,8 +1,11 @@
-name: Rust
+name: BuildTest
 
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - 'readme.md'
+      - '.gitignore'
   pull_request:
     branches: [ "main" ]
 
@@ -16,10 +19,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Check code style
+      run: cargo fmt --check
+
     - name: Install dependencies
       run: |
         sudo apt update
         sudo apt install -y libfontconfig-dev
+
     - name: Build
       run: cargo build --verbose
     - name: Run tests

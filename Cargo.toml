@@ -2,6 +2,13 @@
 name = "yplus"
 version = "0.1.1"
 edition = "2024"
+authors = ["huarkiou"]
+description = "CFD中的y+计算小工具"
+categories = ["CFD"]
+homepage = "https://github.com/huarkiou/yplus"
+repository = "https://github.com/huarkiou/yplus"
+documentation = "https://github.com/huarkiou/yplus"
+license = "MIT"
 
 [profile.release]
 opt-level = 'z'
